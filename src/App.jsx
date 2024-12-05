@@ -1,24 +1,22 @@
+import React from "react";
+
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import "./App.css";
-// eslint-disable-next-line import/extensions
-import logo from "./logo.svg";
+import MoviesList from "./component/MoviesList";
+
+// Create a QueryClient instance
+const queryClient = new QueryClient();
 
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img alt="logo" className="App-logo" src={logo} />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
+  <QueryClientProvider client={queryClient}>
+    <Router>
+      <Switch>
+        <Route exact component={MoviesList} path="/" />
+      </Switch>
+    </Router>
+  </QueryClientProvider>
 );
 
 export default App;
