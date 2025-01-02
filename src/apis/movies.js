@@ -1,8 +1,11 @@
 import { Toastr } from "@bigbinary/neetoui";
 import axios from "axios";
 
-const API_KEY = "7aa40474";
-const BASE_URL = "https://www.omdbapi.com/";
+// const API_KEY = "7aa40474";
+// const BASE_URL = "https://www.omdbapi.com/";
+
+const API_KEY = process.env.REACT_APP_API_KEY;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const fetchAllMovies = async (searchTerm, page = 1) => {
   if (!searchTerm) {
