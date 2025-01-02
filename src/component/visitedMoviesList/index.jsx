@@ -1,21 +1,63 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import useMovieStore from "stores/movieStore";
 
 const VisitedMoviesList = () => {
-  const { visitedMovies } = useMovieStore();
+  const visitedMovies = useMovieStore(state => state.visitedMovies);
+  const movieModalName = useMovieStore(state => state.movieModalName);
+
+  // Ref for the container div
+  const listRef = useRef(null);
+
+  const handleScrollToMovie = () => {
+    // Find the element matching movieModalName
+    const movieElement = Array.from(listRef.current.children).find(
+      child => child.textContent === movieModalName
+    );
+
+    if (movieElement) {
+      movieElement.scrollIntoView({
+        behavior: "instant",
+        block: "start", // Align it nearest within the container
+        inline: "nearest",
+      });
+    }
+  };
+
+  // Automatically scroll to the movie when the component renders or movieModalName changes
+  React.useEffect(() => {
+    if (movieModalName) {
+      handleScrollToMovie();
+    }
+  }, [movieModalName]);
 
   return (
-    <div className="col-auto flex">
-      <h3 className="m-4 text-left text-2xl font-bold text-gray-800">
-        Visited Movies
+    <div className="h-300px relative ml-4 w-full">
+      {" "}
+      {/* Fixed height for parent */}
+      {/* Header inside the scrollable area */}
+      <h3 className="sticky top-0 z-10 bg-white text-center font-bold text-gray-800">
+        View History
       </h3>
-      <div className="m-8 flex flex-wrap justify-center gap-6">
+      {/* Scrollable content */}
+      <div
+        className="flex flex-col  overflow-y-auto "
+        ref={listRef}
+        style={{ height: "calc(100vh - 50px)" }}
+      >
         {visitedMovies.map(movie => (
-          <h1>{movie}</h1>
+          <p
+            key={movie}
+            className={`mb-4 flex h-20 w-full items-center justify-center rounded-md ${
+              movie === movieModalName ? "bg-blue-custom" : "bg-blue-light"
+            }`}
+          >
+            {movie}
+          </p>
         ))}
       </div>
     </div>
   );
 };
+
 export default VisitedMoviesList;

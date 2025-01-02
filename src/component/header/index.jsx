@@ -21,7 +21,7 @@ const Header = ({ searchTerm, setSearchTerm }) => {
   }, []);
 
   return (
-    <nav className="bg-gray-100">
+    <nav className="w-3/4 ">
       <div className="container flex  items-center justify-between px-12 py-4">
         <div className="hidden space-x-8 lg:flex">
           <a className="text-lg font-semibold" href="#">

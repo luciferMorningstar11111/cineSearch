@@ -9,10 +9,16 @@ import MovieModal from "../movieModel";
 const MovieCard = ({ Title, Poster, Type, Year, imdbID }) => {
   const handleVisitedMovies = useMovieStore(state => state.addVisitedMovies);
   const [showModal, setShowModal] = useState(false);
+  // const [movieModalName, setMovieModalName] = useMovieStore((state) => [state.movieModalName, state.setMovieModalName]);
+  const movieModalName = useMovieStore(state => state.movieModalName);
+  const setMovieModalName = useMovieStore(state => state.setMovieModalName);
+
   const history = useHistory();
+
   const handleClick = () => {
     setShowModal(true);
     handleVisitedMovies(Title);
+    setMovieModalName(Title);
     history.push(`/${encodeURIComponent(Type)}/${encodeURIComponent(Title)}`);
   };
 
