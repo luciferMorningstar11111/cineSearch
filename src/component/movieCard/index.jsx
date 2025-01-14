@@ -4,7 +4,7 @@ import { Button } from "@bigbinary/neetoui";
 import { useHistory } from "react-router-dom";
 import useMovieStore from "stores/movieStore";
 
-import MovieModal from "../movieModel";
+import MovieModal from "../movieModal";
 
 const MovieCard = ({ Title, Poster, Type, Year, imdbID }) => {
   const handleVisitedMovies = useMovieStore(state => state.addVisitedMovies);

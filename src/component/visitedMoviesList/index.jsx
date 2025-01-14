@@ -47,13 +47,16 @@ const VisitedMoviesList = () => {
       >
         {visitedMovies.map(movie => (
           <p
-            key={movie}
-            className={`mb-4 flex h-20 w-full items-center justify-center rounded-md ${
-              movie === movieModalName ? "bg-blue-custom" : "bg-blue-light"
-            }`}
-          >
-            {movie}
-          </p>
+          key={movie}
+          className={`mb-4 flex h-20 w-full items-center justify-center rounded-md ${
+            movie === movieModalName
+            ? "bg-blue-600 text-white" // Selected item color
+            : "bg-gray-200 text-gray-800" // Default item color
+          }`}
+        >
+          {movie}
+        </p>
+
         ))}
       </div>
     </div>
