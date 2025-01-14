@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-import { Pagination } from "@bigbinary/neetoui";
-import { Spinner } from "@bigbinary/neetoui";
+import { Pagination, Spinner } from "@bigbinary/neetoui";
 import { Helmet } from "react-helmet";
 import useDebounce from "src/hooks/debounce";
 import useMovies from "src/hooks/useMovies";
@@ -12,10 +11,11 @@ import MovieCard from "../movieCard";
 import VisitedMoviesList from "../visitedMoviesList";
 
 const MoviesList = () => {
-  const { searchTerm, setSearchTerm } = useMovieStore();
-  const { visitedMovies, addVisitedMovies } = useMovieStore();
+  const { searchTerm } = useMovieStore(state => state.searchTerm);
+  const setSearchTerm = useMovieStore(state => state.setSearchTerm);
+
+  const visitedMovies = useMovieStore(state => state.visitedMovies);
   const visitedMoviesSize = visitedMovies.length;
-  console.log(visitedMoviesSize, "visitedMoviesSize");
   const [currentPage, setCurrentPage] = useState(1);
   const debounceKey = useDebounce(searchTerm);
 

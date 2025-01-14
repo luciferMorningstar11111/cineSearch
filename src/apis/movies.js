@@ -1,8 +1,6 @@
 import { Toastr } from "@bigbinary/neetoui";
 import axios from "axios";
 
-
-
 const API_KEY = process.env.REACT_APP_API_KEY;
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -26,6 +24,8 @@ const fetchAllMovies = async (searchTerm, page = 1) => {
   } catch (error) {
     Toastr.error(error.message || "An error occurred while fetching movies."); // Re-throw error for handling in calling code
   }
+
+  return null;
 };
 
 const fetchMovieByTitle = async title => {

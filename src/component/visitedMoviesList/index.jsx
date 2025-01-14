@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 
 import useMovieStore from "stores/movieStore";
 
@@ -9,7 +9,8 @@ const VisitedMoviesList = () => {
   // Ref for the container div
   const listRef = useRef(null);
 
-  const handleScrollToMovie = () => {
+  // Memoize handleScrollToMovie to avoid unnecessary re-creations
+  const handleScrollToMovie = useCallback(() => {
     // Find the element matching movieModalName
     const movieElement = Array.from(listRef.current.children).find(
       child => child.textContent === movieModalName
@@ -22,14 +23,14 @@ const VisitedMoviesList = () => {
         inline: "nearest",
       });
     }
-  };
+  }, [movieModalName]); // Added movieModalName to the dependency array
 
   // Automatically scroll to the movie when the component renders or movieModalName changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (movieModalName) {
       handleScrollToMovie();
     }
-  }, [movieModalName]);
+  }, [movieModalName, handleScrollToMovie]); // Added handleScrollToMovie to the dependency array
 
   return (
     <div className="h-300px relative ml-4 w-full">
@@ -41,22 +42,21 @@ const VisitedMoviesList = () => {
       </h3>
       {/* Scrollable content */}
       <div
-        className="flex flex-col  overflow-y-auto "
+        className="flex flex-col overflow-y-auto"
         ref={listRef}
         style={{ height: "calc(100vh - 50px)" }}
       >
         {visitedMovies.map(movie => (
           <p
-          key={movie}
-          className={`mb-4 flex h-20 w-full items-center justify-center rounded-md ${
-            movie === movieModalName
-            ? "bg-blue-600 text-white" // Selected item color
-            : "bg-gray-200 text-gray-800" // Default item color
-          }`}
-        >
-          {movie}
-        </p>
-
+            key={movie}
+            className={`mb-4 flex h-20 w-full items-center justify-center rounded-md ${
+              movie === movieModalName
+                ? "bg-blue-600 text-white" // Selected item color
+                : "bg-gray-200 text-gray-800" // Default item color
+            }`}
+          >
+            {movie}
+          </p>
         ))}
       </div>
     </div>

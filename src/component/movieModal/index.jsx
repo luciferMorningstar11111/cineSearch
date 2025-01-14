@@ -21,7 +21,6 @@ const MovieModal = ({ Title, Poster, onClose }) => {
     Director,
     Actors,
     BoxOffice,
-    Country,
     Year,
     Runtime,
     Language,
@@ -32,9 +31,9 @@ const MovieModal = ({ Title, Poster, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-full max-w-3xl rounded-lg bg-white shadow-lg p-6 relative">
+      <div className="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg">
         {/* Modal Header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold">{Title}</h2>
           <Close
             className="cursor-pointer text-gray-500 hover:text-gray-700"
@@ -42,34 +41,30 @@ const MovieModal = ({ Title, Poster, onClose }) => {
             onClick={onClose}
           />
         </div>
-
         {/* Genre Tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="mb-4 flex flex-wrap gap-2">
           {Genre.split(",").map(genre => (
             <span
+              className="rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-700"
               key={genre}
-              className="rounded-full bg-gray-200 text-sm text-gray-700 px-3 py-1"
             >
               {genre}
             </span>
           ))}
         </div>
-
         {/* Content */}
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col gap-6 md:flex-row">
           {/* Poster */}
           <img
             alt={Title}
-            className="w-full md:w-1/3 rounded-md"
+            className="w-full rounded-md md:w-1/3"
             src={Poster || "https://via.placeholder.com/300"}
           />
-
           {/* Details */}
           <div className="flex-1 overflow-auto">
-            <p className="italic text-gray-600 mb-4">{Plot}</p>
-
+            <p className="mb-4 italic text-gray-600">{Plot}</p>
             {/* Additional Details */}
-            <div className="text-left space-y-2 text-gray-700">
+            <div className="space-y-2 text-left text-gray-700">
               <p>
                 <strong>Director:</strong> {Director || "N/A"}
               </p>
@@ -77,7 +72,8 @@ const MovieModal = ({ Title, Poster, onClose }) => {
                 <strong>Actors:</strong> {Actors || "N/A"}
               </p>
               <p>
-                <strong>Box Office:</strong> {BoxOffice ? `$${BoxOffice}` : "N/A"}
+                <strong>Box Office:</strong>{" "}
+                {BoxOffice ? `$${BoxOffice}` : "N/A"}
               </p>
               <p>
                 <strong>Year:</strong> {Year || "N/A"}
