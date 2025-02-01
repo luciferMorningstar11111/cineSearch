@@ -11,7 +11,7 @@ import MovieCard from "../movieCard";
 import VisitedMoviesList from "../visitedMoviesList";
 
 const MoviesList = () => {
-  const { searchTerm } = useMovieStore(state => state.searchTerm);
+  const searchTerm = useMovieStore(state => state.searchTerm);
   const setSearchTerm = useMovieStore(state => state.setSearchTerm);
 
   const visitedMovies = useMovieStore(state => state.visitedMovies);
