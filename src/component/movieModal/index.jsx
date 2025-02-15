@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import { Close } from "@bigbinary/neeto-icons";
 import { Spinner, Tooltip } from "@bigbinary/neetoui";
-import favorite from "assets/icons/favorite";
-import favorited from "assets/icons/favorited";
+// eslint-disable-next-line import/extensions
+import favorite from "assets/icons/favorite.svg";
+// eslint-disable-next-line import/extensions
+import favorited from "assets/icons/favorited.svg";
 import useMovies from "src/hooks/useMovies";
 import useMovieStore from "stores/movieStore";
 
