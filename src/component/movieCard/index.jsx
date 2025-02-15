@@ -1,36 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
 import { Button } from "@bigbinary/neetoui";
-import { useHistory } from "react-router-dom";
 import useMovieStore from "stores/movieStore";
+import { shallow } from "zustand/shallow";
 
 import MovieModal from "../movieModal";
 
-const MovieCard = ({ Title, Poster, Type, Year, imdbID }) => {
+const MovieCard = ({ Title, Poster, Type, Year }) => {
   const handleVisitedMovies = useMovieStore(state => state.addVisitedMovies);
-  const [showModal, setShowModal] = useState(false);
-  const setMovieModalName = useMovieStore(state => state.setMovieModalName);
 
-  const history = useHistory();
+  const setMovieModalName = useMovieStore(state => state.setMovieModalName);
+  const showModal = useMovieStore(state => state.showModal, shallow);
+  const setShowModal = useMovieStore(state => state.setShowModal);
 
   const handleClick = () => {
-    setShowModal(true);
-    handleVisitedMovies(Title);
-    setMovieModalName(Title);
-    history.push(`/${encodeURIComponent(Type)}/${encodeURIComponent(Title)}`);
+    if (!showModal) {
+      // ✅ Only update if not already true
+      setShowModal(true);
+      setMovieModalName(Title);
+      handleVisitedMovies(Title);
+    }
   };
 
-  const movieDetails = {
-    Title,
-    Poster,
-    Type,
-    Year,
-    imdbID,
-  };
+  useEffect(() => {
+    console.log("showModal changed:", showModal);
+  }, [showModal]);
+
+  // const movieDetails = {
+  //   Title,
+  //   Poster,
+  //   Type,
+  //   Year,
+  //   imdbID,
+  // };
 
   const fallbackImage =
     "https://via.placeholder.com/300x450.png?text=No+Image+Available";
-  Poster = Poster === "N/A" ? fallbackImage : Poster;
 
   return (
     <div className="items-centre m-5 flex h-96 w-72 flex-col overflow-hidden rounded-lg bg-white shadow-lg">
@@ -38,7 +43,7 @@ const MovieCard = ({ Title, Poster, Type, Year, imdbID }) => {
         <img
           alt={`Poster of ${Title}`}
           className="h-full w-full object-contain"
-          src={Poster}
+          src={Poster === "N/A" ? fallbackImage : Poster}
         />
       </div>
       <div className=" flex h-1/3 w-full flex-col px-4 py-2  text-left">
@@ -61,21 +66,19 @@ const MovieCard = ({ Title, Poster, Type, Year, imdbID }) => {
             label="view more"
             size="small"
             style="secondary"
-            onClick={() => {
-              handleClick();
-              handleVisitedMovies(Title);
-            }}
+            onClick={handleClick}
           />
         </div>
       </div>
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20">
           <MovieModal
-            {...movieDetails}
+            movie={Title}
+            setShowModal={setShowModal}
             onClose={() => {
               document.body.style.overflow = "auto";
               setShowModal(false);
-              history.goBack();
+              // history.goBack();
             }}
           />
         </div>

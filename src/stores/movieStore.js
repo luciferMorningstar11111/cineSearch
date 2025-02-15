@@ -15,11 +15,29 @@ const useMovieStore = create(
             ? state.visitedMovies
             : [...state.visitedMovies, movie],
         })),
+      showModal: false,
+      setShowModal: value => set({ showModal: value }),
+      favouriteMovies: [],
+      addFavouriteMovies: movie =>
+        set(state => ({
+          favouriteMovies: state.favouriteMovies.some(
+            m => m.Title === movie.Title
+          )
+            ? state.favouriteMovies
+            : [...state.favouriteMovies, movie],
+        })),
+      removeFavouriteMovies: title =>
+        set(state => ({
+          favouriteMovies: state.favouriteMovies.filter(
+            favMovie => favMovie.Title !== title
+          ),
+        })),
+
       addMovies: movies =>
         set(state => ({
           movies: [...state.movies, ...movies],
         })),
-      movieModalName: "spi",
+      movieModalName: "",
       setMovieModalName: movieModalName => set({ movieModalName }),
     }),
     {
