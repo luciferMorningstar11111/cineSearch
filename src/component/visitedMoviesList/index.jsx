@@ -6,54 +6,52 @@ const VisitedMoviesList = () => {
   const visitedMovies = useMovieStore(state => state.visitedMovies);
   const movieModalName = useMovieStore(state => state.movieModalName);
 
-  // Ref for the container div
+  // Ref for the scrollable container
   const listRef = useRef(null);
 
-  // Memoize handleScrollToMovie to avoid unnecessary re-creations
+  // Function to scroll to the selected movie
   const handleScrollToMovie = useCallback(() => {
-    // Find the element matching movieModalName
+    if (!listRef.current) return;
+
+    // Find the movie element inside the container
     const movieElement = Array.from(listRef.current.children).find(
       child => child.textContent === movieModalName
     );
 
     if (movieElement) {
       movieElement.scrollIntoView({
-        behavior: "instant",
-        block: "start", // Align it nearest within the container
+        behavior: "smooth", // Use smooth scrolling
+        block: "center",
         inline: "nearest",
       });
     }
-  }, [movieModalName]); // Added movieModalName to the dependency array
+  }, [movieModalName]);
 
-  // Automatically scroll to the movie when the component renders or movieModalName changes
+  // Scroll to the movie when movieModalName changes
   useEffect(() => {
-    if (movieModalName) {
-      handleScrollToMovie();
-    }
-  }, [movieModalName, handleScrollToMovie]); // Added handleScrollToMovie to the dependency array
+    handleScrollToMovie();
+  }, [movieModalName, handleScrollToMovie]);
 
   return (
-    <div className="h-300px relative ml-4 w-full">
-      {" "}
-      {/* Fixed height for parent */}
-      {/* Header inside the scrollable area */}
-      <h3 className="sticky top-0 z-10 bg-white text-center font-bold text-gray-800">
+    <div className="relative ml-4 h-[300px] w-full rounded-md border border-gray-300 shadow-lg">
+      {/* Header */}
+      <h3 className="sticky top-0 z-10 border-b bg-white py-3 text-center font-bold text-gray-900">
         View History
       </h3>
       {/* Scrollable content */}
       <div
-        className="flex flex-col overflow-y-auto"
+        className="flex flex-col space-y-3 overflow-y-auto p-2"
         ref={listRef}
         style={{ height: "calc(100vh - 50px)" }}
       >
         {visitedMovies.map(movie => (
           <p
+            className="flex h-16 items-center justify-center rounded-lg px-4 text-center font-medium shadow-md transition-colors"
             key={movie}
-            className={`mb-4 flex h-20 w-full items-center justify-center rounded-md ${
-              movie === movieModalName
-                ? "bg-blue-600 text-white" // Selected item color
-                : "bg-gray-200 text-gray-800" // Default item color
-            }`}
+            style={{
+              backgroundColor: movie === movieModalName ? "#2f62ff" : "#E4E4F8",
+              color: movie === movieModalName ? "#ffffff" : "#1f2937", // Gray-900
+            }}
           >
             {movie}
           </p>
