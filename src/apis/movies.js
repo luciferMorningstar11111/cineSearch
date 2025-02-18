@@ -4,7 +4,7 @@ import axios from "axios";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const fetchAllMovies = async (searchTerm, page = 1) => {
+const fetchAllMovies = async (searchTerm, page, year, type) => {
   if (!searchTerm) {
     return [];
   }
@@ -13,6 +13,8 @@ const fetchAllMovies = async (searchTerm, page = 1) => {
       params: {
         s: searchTerm,
         page,
+        y: year, // Add year filter if provided
+        type,
         apikey: API_KEY,
       },
     });
