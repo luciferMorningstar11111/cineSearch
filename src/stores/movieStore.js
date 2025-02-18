@@ -8,6 +8,11 @@ const useMovieStore = create(
       searchTerm: "",
       setSearchTerm: searchTerm => set({ searchTerm }),
       visitedMovies: [],
+      removeVisitedMovies: title =>
+        set(state => ({
+          visitedMovies: state.visitedMovies.filter(mov => mov !== title),
+        })),
+      removeAllVisitedMovies: () => set({ visitedMovies: [] }),
 
       addVisitedMovies: movie =>
         set(state => ({
