@@ -1,16 +1,16 @@
 import { useQuery } from "react-query";
 import fetchMovies from "src/apis/movies";
 
-const useAllMovies = (searchTerm, page = 1) =>
+const useAllMovies = (searchTerm, page = 1, year = "", type = "") =>
   useQuery({
-    queryKey: ["movies", { searchTerm, page }],
+    queryKey: ["movies", { searchTerm, page, year, type }],
     queryFn: ({ queryKey }) => {
-      const { searchTerm, page } = queryKey[1];
+      const { searchTerm, page, year, type } = queryKey[1]; // Extract all parameters
 
-      return fetchMovies.fetchAllMovies(searchTerm, page);
+      return fetchMovies.fetchAllMovies(searchTerm, page, year, type); // Pass all params
     },
-    enabled: !!searchTerm,
-    keepPreviousData: true,
+    enabled: !!searchTerm, // Prevents query if searchTerm is empty
+    keepPreviousData: true, // Keeps previous data while fetching new results
   });
 
 const useMovie = title =>

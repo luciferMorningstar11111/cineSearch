@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import { Filter } from "@bigbinary/neeto-icons";
 import { Pagination, Spinner, Input } from "@bigbinary/neetoui";
-import { Search } from "neetoicons";
+import { Search, Close } from "neetoicons";
 import { Helmet } from "react-helmet";
+import FilterMovies from "src/component/FilterMovies";
 import useDebounce from "src/hooks/debounce";
 import useMovies from "src/hooks/useMovies";
 import useMovieStore from "stores/movieStore";
@@ -14,10 +16,12 @@ const MoviesList = () => {
   const searchTerm = useMovieStore(state => state.searchTerm);
   const setSearchTerm = useMovieStore(state => state.setSearchTerm);
   const inputRef = useRef(null);
-  const debounceKey = useDebounce(searchTerm);
+  const debounceKey = useDebounce(searchTerm.trim());
   const visitedMovies = useMovieStore(state => state.visitedMovies);
   const visitedMoviesSize = visitedMovies.length;
+  const [filterVisible, setFilterVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = event => {
@@ -33,12 +37,32 @@ const MoviesList = () => {
     };
   }, []);
 
+  const [filterValues, setFilterValues] = useState({ year: "", type: "" });
+
+  const onApply = values => {
+    setFilterValues({
+      ...values,
+      type: values.type.length === 2 ? "" : values.type[0] || "",
+    });
+  };
+
+  const handleClearSearchTerm = () => {
+    console.log("clearing search term");
+    setSearchTerm("");
+    console.log(searchTerm, "searchTerm");
+    // setIsFocused(false);
+  };
+
   const { data, isLoading, isError, error } = useMovies.useAllMovies(
     debounceKey,
-    currentPage
+    currentPage,
+    filterValues.year, // Use state value
+    filterValues.type // Use state value
   );
 
+  //for filtering the movie data
   const movies = data?.Search || [];
+
   const totalItems = parseInt(data?.totalResults || 0, 10);
   if (isLoading) {
     return <Spinner />;
@@ -54,13 +78,33 @@ const MoviesList = () => {
       <div className="flex h-auto">
         {/* Movies Section (Adjustable width) */}
         <div className={visitedMoviesSize > 0 ? "h-auto w-3/4 " : "w-full "}>
-          <div className="border-black-300 mx-auto w-3/4 rounded border">
-            <Input
-              placeholder="search"
-              prefix={<Search />}
-              ref={inputRef}
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+          <div className="relative mx-auto w-3/4">
+            {/* Search Input and Filter Icon */}
+            <div className="flex items-center gap-3  px-3 py-2">
+              {/* <Search className="text-gray-500" /> */}
+              <Input
+                className="focus:outline-none w-full"
+                placeholder="Search"
+                prefix={<Search />}
+                ref={inputRef}
+                value={searchTerm}
+                suffix={
+                  isFocused ? <Close onClick={handleClearSearchTerm} /> : null
+                }
+                onBlur={() => setIsFocused(false)}
+                onChange={e => setSearchTerm(e.target.value)}
+                onFocus={() => setIsFocused(true)} // Set focus state to true
+              />
+              <Filter
+                className="cursor-pointer text-gray-600 hover:text-gray-800"
+                onClick={() => setFilterVisible(!filterVisible)}
+              />
+            </div>
+            <FilterMovies
+              className={`${filterVisible ? "block" : "hidden"}`}
+              filterVisible={filterVisible}
+              onApply={onApply}
+              onClose={() => setFilterVisible(false)}
             />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-6 overflow-auto">
