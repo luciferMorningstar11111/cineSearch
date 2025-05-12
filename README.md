@@ -48,8 +48,8 @@ You can check out the live version here:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/cineSearcher.git
-   cd cineSearcher
+   git clone https://github.com/yourusername/cineSearch.git
+   cd cineSearch
    ```
 2. Install dependencies:
    ```sh
