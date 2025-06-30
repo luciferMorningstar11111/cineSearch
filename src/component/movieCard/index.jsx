@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 
 import { Button } from "@bigbinary/neetoui";
+// eslint-disable-next-line import/extensions
+import fallbackImage from "src/assets/images/fallbackImage.png";
 import useMovieStore from "stores/movieStore";
 import { shallow } from "zustand/shallow";
 
@@ -33,10 +35,6 @@ const MovieCard = ({ Title, Poster, Type, Year }) => {
   //   Year,
   //   imdbID,
   // };
-
-  const fallbackImage =
-    "https://via.placeholder.com/300x450.png?text=No+Image+Available";
-
   return (
     <div className="items-centre m-5 flex h-96 w-72 flex-col overflow-hidden rounded-lg bg-white shadow-lg">
       <div className="h-2/3 w-full">

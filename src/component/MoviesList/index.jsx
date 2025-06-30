@@ -71,16 +71,18 @@ const MoviesList = () => {
   if (isError) return <div>{error.message}</div>;
 
   return (
-    <div className="App relative min-h-screen">
+    <div className="App relative mx-auto min-h-screen ">
       <Helmet>
         <title>Movies</title>
       </Helmet>
-      <div className="flex h-auto">
+      <div className="mx-auto flex h-auto">
         {/* Movies Section (Adjustable width) */}
-        <div className={visitedMoviesSize > 0 ? "h-auto w-3/4 " : "w-full "}>
-          <div className="relative mx-auto w-3/4">
+        <div
+          className={`h-auto w-full ${visitedMoviesSize > 0 ? "lg:w-3/4" : ""}`}
+        >
+          <div className="relative w-full  lg:mx-auto lg:w-3/4">
             {/* Search Input and Filter Icon */}
-            <div className="flex items-center gap-3  px-3 py-2">
+            <div className=" flex items-center gap-3  px-3 py-2">
               {/* <Search className="text-gray-500" /> */}
               <Input
                 className="focus:outline-none w-full"
@@ -107,7 +109,7 @@ const MoviesList = () => {
               onClose={() => setFilterVisible(false)}
             />
           </div>
-          <div className="mt-8 flex flex-wrap justify-center gap-6 overflow-auto">
+          <div className=" mt-8 flex flex-wrap justify-center gap-6 overflow-auto">
             {movies.map(movie => (
               <MovieCard key={movie.imdbID} {...movie} />
             ))}
@@ -123,7 +125,7 @@ const MoviesList = () => {
         </div>
         {/* Visited Movies Section (Hidden if no visited movies) */}
         {visitedMoviesSize > 0 && (
-          <div className="fixed right-0 top-0 w-1/4  border-gray-500 py-5">
+          <div className="fixed right-0 top-0 hidden w-1/4 border-gray-500 py-5 lg:block">
             <VisitedMoviesList />
           </div>
         )}

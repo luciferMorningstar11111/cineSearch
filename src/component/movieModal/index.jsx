@@ -6,6 +6,8 @@ import { Spinner, Tooltip } from "@bigbinary/neetoui";
 import favorite from "assets/icons/favorite.svg";
 // eslint-disable-next-line import/extensions
 import favorited from "assets/icons/favorited.svg";
+// eslint-disable-next-line import/extensions
+import fallbackImage from "src/assets/images/fallbackImage.png";
 import useMovies from "src/hooks/useMovies";
 import useMovieStore from "stores/movieStore";
 
@@ -34,7 +36,7 @@ const MovieModal = ({ onClose }) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-0">
         <Spinner />
       </div>
     );
@@ -75,12 +77,15 @@ const MovieModal = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center ">
-      <div className="relative w-full max-w-3xl rounded-lg bg-white p-6 shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="relative my-4 max-h-screen w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-6 shadow-lg">
         {/* Modal Header */}
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-bold">{Title}</h2>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap">
+          {/* Left section: Title + Favourite */}
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <h2 className="max-w-[150px] truncate text-xl font-bold sm:max-w-none">
+              {Title}
+            </h2>
             {isFavourite ? (
               <Tooltip
                 content="Remove from Favourites"
@@ -111,8 +116,9 @@ const MovieModal = ({ onClose }) => {
               </Tooltip>
             )}
           </div>
+          {/* Right section: Close Button */}
           <Close
-            className="cursor-pointer rounded border border-transparent text-gray-500 hover:border-2 hover:border-gray-700 hover:text-gray-700"
+            className="shrink-0 cursor-pointer rounded border border-transparent text-gray-500 hover:border-2 hover:border-gray-700 hover:text-gray-700"
             size={24}
             onClick={onClose}
           />
@@ -133,8 +139,8 @@ const MovieModal = ({ onClose }) => {
           {/* Poster */}
           <img
             alt={Title}
-            className="w-full rounded-md md:w-1/3"
-            src={Poster || "https://via.placeholder.com/300"}
+            className="mx-auto w-2/3 rounded-md sm:w-full md:w-1/3"
+            src={Poster || fallbackImage}
           />
           {/* Details */}
           <div className="flex-1 overflow-auto">
